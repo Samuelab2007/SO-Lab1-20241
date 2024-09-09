@@ -1,5 +1,8 @@
 /*
-Integrantes: Samuel Acevedo Bustamante
+Integrantes:
+- Samuel Acevedo Bustamante(1001016099)
+- Manuela GUtiérrez Cano (1037657256)
+
 
 TODO: Permitir recibir archivos por la stdinput.
 Permitir escoger el nombre del archivo de salida, y también permitir escribir el resultado en
