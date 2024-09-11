@@ -19,9 +19,10 @@ Pa eso capaz tengo que compartimentar el código.
 int main(int argc, char *argv[])
 {
 
-    if (argc >= 3)
+    printf("Cantidad de argumentos: %i\n", argc);
+    if (argc >= 4)
     {
-        fprintf(stderr, "Error: Cantidad de argumentos invalida. El máximo de argumentos es 2");
+        fprintf(stderr, "Error: Cantidad de argumentos invalida. El máximo de argumentos es 2\n");
     }
 
     // Variable declarations
@@ -42,7 +43,7 @@ int main(int argc, char *argv[])
         stream = fgets(line, 100, rptr);
         linec++;
     }
-
+    printf("cantidad de lineas: %i", linec);
     char *line_list[linec]; // Crea un array para guardar las líneas
 
     // Reinicia el contador de líneas y vuelve al inicio del stream.
@@ -72,21 +73,22 @@ int main(int argc, char *argv[])
 
     // Escribe en el archivo de salida.
 
+    wptr = fopen(argv[2], "w");
     for (int i = linec - 1; i >= 0; i--)
     {
-        wptr = fopen(argv[2], "a");
-        fputs(line_list[i], wptr);
-        fclose(wptr);
-        // Esta joda me está retornando mero archivo binario ahí. Seguramente estoy almacenando mal los strings o algo
+        // De momento es para cuando se utiliza solo la entrada
+        if (argc < 3)
+        {
+            fputs(line_list[i], stdout);
+        }
+        else
+        {
+            fputs(line_list[i], wptr);
+        }
     }
-
-    // stdin = 0
-    // stdout = 1
+    fclose(wptr);
 
     // Usar la variable argc para determinar cuantos argumentos se utilizaron llamando la función.
     // Si es uno sólo, se hace uso de stdout. Si no son ninguno se lee también stdin.
     // Si son más de tres. Se manda un error y listo.
-
-    int descriptor = fileno(stdout);
-    printf("Descriptor de la salida estándar: %i", descriptor);
 }
