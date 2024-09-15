@@ -18,11 +18,12 @@ Pa eso capaz tengo que compartimentar el código.
 
 int main(int argc, char *argv[])
 {
-
+    // validacion de la cantidad de argumentos pasados al programa
     printf("Cantidad de argumentos: %i\n", argc);
     if (argc >= 4)
     {
         fprintf(stderr, "Error: Cantidad de argumentos invalida. El máximo de argumentos es 2\n");
+        exit(1);
     }
 
     // Variable declarations
@@ -34,6 +35,14 @@ int main(int argc, char *argv[])
     int linec = 0;
 
     rptr = fopen(argv[1], "r");
+
+    // Error al intentar abrir el archivo de entrada
+    const char *nombre_archv = argv[1];
+    if (rptr == NULL)
+    {
+        fprintf(stderr, "Error: cannot open file\n", nombre_archv);
+        exit(1);
+    } 
 
     //////////////////
 
@@ -74,6 +83,35 @@ int main(int argc, char *argv[])
     // Escribe en el archivo de salida.
 
     wptr = fopen(argv[2], "w");
+
+    // Error al intentar abrir el achivo de salida
+    const char *name_file = argv[2];
+    if (wptr == NULL)
+    {
+        fprintf(stderr, "Error: cannot open file\n", name_file);
+        exit(1);
+    }
+
+    // Compara si los archivos de entrada y salida son iguales
+    //while (!feof(rptr) && !feof(wptr))
+    //{
+    //    line2 = (char*)malloc(sizeof(int));
+        // Fallo en asignacion de memoria dinamica (malloc falla)
+    //    if (line2 == NULL)
+    //    {
+    //        fprintf(stderr, "Malloc failed"\n);
+    //        exit(1);
+    //    }
+    //    linearptr = fgets(line, 100, rptr);
+    //    lineawptr = fgets(line2, 100, wptr);
+    //    if (strcmp(linearptr, lineawptr) == 0)
+    //    {
+    //        fprintf(stderr, "Los archivos de entrada y de salida deben diferir\n");
+    //        exit(0);
+    //    }
+
+    //}
+
     for (int i = linec - 1; i >= 0; i--)
     {
         // De momento es para cuando se utiliza solo la entrada
