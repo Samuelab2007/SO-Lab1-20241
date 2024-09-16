@@ -62,18 +62,23 @@ int main(int argc, char *argv[])
         fprintf(stderr, "reverse: cannot open file '%s'\n", nombre_archv);
         exit(1);
     }
+    // TODO LO QUE SEA COMPARAR DIRECTAMENTE ARGV[] ES PROPENSO A SEGFAULTS, PORQUE ESOS VALORES
+    // PUEDEN ESTAR O NO ESTAR DEFINIDOS
 
-    if (strcmp(argv[1], argv[2]) == 0)
+    if (argc > 2)
     {
-        fprintf(stderr, "reverse: input and output file must differ\n");
-        exit(1);
-    }
+        if (strcmp(argv[1], argv[2]) == 0)
+        {
+            fprintf(stderr, "reverse: input and output file must differ\n");
+            exit(1);
+        }
 
-    int hardlink_verify = files_hardlinked(argv[1], argv[2]);
-    if (hardlink_verify == 1)
-    {
-        fprintf(stderr, "reverse: input and output file must differ\n");
-        exit(1);
+        int hardlink_verify = files_hardlinked(argv[1], argv[2]);
+        if (hardlink_verify == 1)
+        {
+            fprintf(stderr, "reverse: input and output file must differ\n");
+            exit(1);
+        }
     }
 
     //////////////////
@@ -112,16 +117,19 @@ int main(int argc, char *argv[])
         linec++;
     }
 
-    // Escribe en el archivo de salida.
-
-    wptr = fopen(argv[2], "w");
-
-    // Error al intentar abrir el achivo de salida
-    const char *name_file = argv[2];
-    if (wptr == NULL)
+    if (argc > 2)
     {
-        fprintf(stderr, "Error: cannot open file\n", name_file);
-        exit(1);
+        // Escribe en el archivo de salida.
+
+        wptr = fopen(argv[2], "w");
+
+        // Error al intentar abrir el achivo de salida
+        const char *name_file = argv[2];
+        if (wptr == NULL)
+        {
+            fprintf(stderr, "Error: cannot open file\n", name_file);
+            exit(1);
+        }
     }
 
     // Compara si los archivos de entrada y salida son iguales
@@ -156,7 +164,10 @@ int main(int argc, char *argv[])
             fputs(line_list[i], wptr);
         }
     }
-    fclose(wptr);
+    if (argc > 2)
+    {
+        fclose(wptr);
+    }
 
     // Usar la variable argc para determinar cuantos argumentos se utilizaron llamando la función.
     // Si es uno sólo, se hace uso de stdout. Si no son ninguno se lee también stdin.
